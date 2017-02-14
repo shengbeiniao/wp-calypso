@@ -12,10 +12,11 @@ var isEmpty = require( 'lodash/isEmpty' ),
  */
 var i18nUtils = require( 'lib/i18n-utils' ),
 	steps = require( 'signup/config/steps' ),
-	flows = require( 'signup/config/flows' ),
 	defaultFlowName = require( 'signup/config/flows' ).defaultFlowName,
 	formState = require( 'lib/form-state' ),
 	user = require( 'lib/user' )();
+
+import flows from 'signup/config/flows';
 
 function getFlowName( parameters ) {
 	const flow = ( parameters.flowName && isFlowName( parameters.flowName ) ) ? parameters.flowName : defaultFlowName;
