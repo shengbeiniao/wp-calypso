@@ -19,9 +19,8 @@ describe( 'HeaderNav', function() {
 	} );
 
 	it( 'should render as expected', function() {
-		const wrapper = shallow( <HeaderNav title="Section">Content</HeaderNav> );
+		const wrapper = shallow( <HeaderNav /> );
 
 		expect( wrapper ).to.have.className( 'header-nav' );
-		expect( wrapper ).to.have.text( 'Content' );
 	} );
 } );
