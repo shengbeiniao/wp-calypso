@@ -20,6 +20,7 @@ const Sites = React.createClass( {
 	mixins: [ observe( 'sites', 'user' ) ],
 
 	propTypes: {
+		isSiteUpgradeable: React.PropTypes.func.isRequired,
 		path: React.PropTypes.string.isRequired
 	},
 
