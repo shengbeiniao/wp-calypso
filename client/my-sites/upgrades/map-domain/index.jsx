@@ -28,7 +28,6 @@ class MapDomain extends Component {
 	static propTypes = {
 		initialQuery: React.PropTypes.string,
 		query: React.PropTypes.string,
-		path: React.PropTypes.string.isRequired,
 		cart: React.PropTypes.object.isRequired,
 		selectedSite: React.PropTypes.object,
 		getSelectedSiteSlug: React.PropTypes.string,
@@ -64,13 +63,12 @@ class MapDomain extends Component {
 
 	goBack() {
 		const {
-			path,
 			selectedSite,
 			selectedSiteSlug,
 		} = this.props;
 
 		if ( ! selectedSite ) {
-			page( path.replace( '/mapping', '' ) );
+			page( paths.domainManagementRoot() );
 			return;
 		}
 
