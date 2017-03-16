@@ -36,7 +36,7 @@ export default class PostLifecycle extends React.PureComponent {
 	}
 
 	getPostFromStore( props = this.props ) {
-		if ( props.postKey.isRecommendationBlock ) {
+		if ( props.postKey.isRecommendationBlock || props.postKey.isCombination ) {
 			return null;
 		}
 
@@ -80,23 +80,27 @@ export default class PostLifecycle extends React.PureComponent {
 		const { postKey, index, selectedPostKey } = this.props;
 
 		if ( postKey.isRecommendationBlock ) {
-			return <RecommendedPosts
-								recommendations={ postKey.recommendations }
-								index={ postKey.index }
-								storeId={ this.props.store.id }
-								followSource={ IN_STREAM_RECOMMENDATION }
-								key={ `recs-${ index }` }
-							/>;
+			return (
+				<RecommendedPosts
+					recommendations={ postKey.recommendations }
+					index={ postKey.index }
+					storeId={ this.props.store.id }
+					followSource={ IN_STREAM_RECOMMENDATION }
+					key={ `recs-${ index }` }
+				/>
+			);
 		} else if ( postKey.isCombination ) {
-			return <ConnectedCombinedCard
-								postKey={ postKey }
-								index={ this.props.index }
-								key={ `combined-card-${ this.props.index }` }
-								onClick={ this.handleConnectedCardClick }
-								selectedPostKey={ selectedPostKey }
-								followSource={ COMBINED_CARD }
-								showFollowButton={ this.props.showPrimaryFollowButtonOnCards }
-						/>;
+			return (
+				<ConnectedCombinedCard
+					postKey={ postKey }
+					index={ this.props.index }
+					key={ `combined-card-${ this.props.index }` }
+					onClick={ this.handleConnectedCardClick }
+					selectedPostKey={ selectedPostKey }
+					followSource={ COMBINED_CARD }
+					showFollowButton={ this.props.showPrimaryFollowButtonOnCards }
+				/>
+			);
 		} else if ( ! post || post._state === 'minimal' ) {
 			return <PostPlaceholder />;
 		} else if ( post._state === 'error' ) {
@@ -110,12 +114,14 @@ export default class PostLifecycle extends React.PureComponent {
 		} else if ( isXPost( post ) ) {
 			const xMetadata = XPostHelper.getXPostMetadata( post );
 			const xPostedTo = this.props.store.getSitesCrossPostedTo( xMetadata.commentURL || xMetadata.postURL );
-			return <CrossPost
-								{ ...omit( this.props, 'store' ) }
-								xPostedTo={ xPostedTo }
-								xMetadata={ xMetadata }
-								post={ post }
-							/>;
+			return (
+				<CrossPost
+					{ ...omit( this.props, 'store' ) }
+					xPostedTo={ xPostedTo }
+					xMetadata={ xMetadata }
+					post={ post }
+				/>
+			);
 		}
 
 		const xPostedTo = this.props.store.getSitesCrossPostedTo( post.URL );
