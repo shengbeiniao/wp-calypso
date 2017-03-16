@@ -60,6 +60,8 @@ module.exports = React.createClass( {
 
 	componentWillUnmount: function() {
 		delete this.onSearch;
+		// Clear selected media items when leaving media library
+		MediaActions.setLibrarySelectedItems( this.props.site.ID, [] );
 	},
 
 	onAddMedia: function() {
