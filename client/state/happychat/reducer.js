@@ -14,6 +14,7 @@ import map from 'lodash/map';
 import {
 	SERIALIZE,
 	DESERIALIZE,
+	HAPPYCHAT_DISCONNECTED,
 	HAPPYCHAT_SET_AVAILABLE,
 	HAPPYCHAT_SET_MESSAGE,
 	HAPPYCHAT_RECEIVE_EVENT,
@@ -136,6 +137,8 @@ const connectionStatus = ( state = 'disconnected', action ) => {
 			return 'connecting';
 		case HAPPYCHAT_CONNECTED:
 			return 'connected';
+		case HAPPYCHAT_DISCONNECTED:
+			return 'disconnected';
 	}
 	return state;
 };

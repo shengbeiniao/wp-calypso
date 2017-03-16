@@ -18,6 +18,7 @@ import wpcom from 'lib/wp';
 import {
 	HAPPYCHAT_CONNECTING,
 	HAPPYCHAT_CONNECTED,
+	HAPPYCHAT_DISCONNECTED,
 	HAPPYCHAT_SET_MESSAGE,
 	HAPPYCHAT_RECEIVE_EVENT,
 	HAPPYCHAT_SET_AVAILABLE,
@@ -66,6 +67,7 @@ export const receiveChatTranscript = ( messages, timestamp ) => ( {
 
 const setChatConnecting = () => ( { type: HAPPYCHAT_CONNECTING } );
 const setChatConnected = () => ( { type: HAPPYCHAT_CONNECTED } );
+const setChatDisconnected = () => ( { type: HAPPYCHAT_DISCONNECTED } );
 const setChatMessage = message => {
 	if ( isEmpty( message ) ) {
 		connection.notTyping();
@@ -122,7 +124,9 @@ export const connectChat = () => ( dispatch, getState ) => {
 			connection
 			.on( 'message', event => dispatch( receiveChatEvent( event ) ) )
 			.on( 'status', status => dispatch( setHappychatChatStatus( status ) ) )
-			.on( 'accept', accept => dispatch( setHappychatAvailable( accept ) ) );
+			.on( 'accept', accept => dispatch( setHappychatAvailable( accept ) ) )
+			.on( 'disconnect', () => dispatch( setChatDisconnected() ) )
+			.on( 'reconnect', () => dispatch( setChatConnecting() ) );
 		},
 		e => debug( 'failed to start happychat session', e, e.stack )
 	);
