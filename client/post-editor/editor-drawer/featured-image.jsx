@@ -13,6 +13,7 @@ import { getFeaturedImageId } from 'lib/posts/utils';
 import Accordion from 'components/accordion';
 import EditorDrawerWell from 'post-editor/editor-drawer-well';
 import FeaturedImage from 'post-editor/editor-featured-image';
+import MediaListData from 'components/data/media-list-data';
 
 class EditorDrawerFeaturedImage extends Component {
 	constructor( props ) {
@@ -41,11 +42,13 @@ class EditorDrawerFeaturedImage extends Component {
 					empty={ ! site || ! post || ! getFeaturedImageId( post ) }
 					onClick={ this.startSelecting }
 					onRemove={ this.removeImage }>
-					<FeaturedImage
-						selecting={ this.state.isSelecting }
-						onImageSelected={ this.endSelecting }
-						site={ site }
-						post={ post } />
+					<MediaListData siteId={ this.props.site.ID }>
+						<FeaturedImage
+							selecting={ this.state.isSelecting }
+							onImageSelected={ this.endSelecting }
+							site={ site }
+							post={ post } />
+					</MediaListData>
 				</EditorDrawerWell>
 			</Accordion>
 		);

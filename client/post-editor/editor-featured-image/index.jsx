@@ -4,12 +4,14 @@
 import React from 'react';
 import classnames from 'classnames';
 import Gridicon from 'gridicons';
+import { filter } from 'lodash';
 
 /**
  * Internal dependencies
  */
 import MediaLibrarySelectedData from 'components/data/media-library-selected-data';
 import MediaModal from 'post-editor/media-modal';
+import MediaActions from 'lib/media/actions';
 import PostActions from 'lib/posts/actions';
 import PostUtils from 'lib/posts/utils';
 import * as stats from 'lib/posts/stats';
@@ -41,6 +43,13 @@ export default React.createClass( {
 	},
 
 	showMediaModal() {
+		const featuredImage = PostUtils.getFeaturedImageId( this.props.post );
+		
+		if ( featuredImage ) {
+			const selectFeaturedImage = filter( this.props.media, { ID: featuredImage } );
+			MediaActions.setLibrarySelectedItems( this.props.site.ID, selectFeaturedImage );
+		}
+
 		this.setState( {
 			isSelecting: true
 		} );
