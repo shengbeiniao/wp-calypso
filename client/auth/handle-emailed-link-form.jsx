@@ -4,7 +4,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import emailValidator from 'email-validator';
-import { pick } from 'lodash';
 
 /**
  * Internal dependencies
@@ -33,6 +32,16 @@ class HandleEmailedLinkForm extends React.Component {
 		};
 	}
 
+	componentWillMount() {
+		const { emailAddress, token, tokenTime } = this.props;
+
+		if ( emailAddress && emailValidator.validate( emailAddress ) && token && tokenTime ) {
+			return;
+		}
+
+		window.location.replace( '/login/link-has-expired' );
+	}
+
 	handleSubmit( event ) {
 		event.preventDefault();
 
@@ -42,14 +51,18 @@ class HandleEmailedLinkForm extends React.Component {
 			hasSubmitted: true,
 		} );
 
-		const postData = pick( this.props.queryArguments, [ 'email', 'token', 'tt' ] );
+		const postData = {
+			email: this.props.emailAddress,
+			token: this.props.token,
+			tt: this.props.tokenTime,
+		};
 
 		debug( 'POST /auth/handle-login-email-link', postData );
 
 		wpcom.undocumented().handleMagicLoginToken( postData, ( err, data ) => {
 			debug( 'response /auth/handle-login-email-link', data );
 			if ( err ) {
-				// @TODO redirect to "expired or not working" page
+				window.location.replace( '/login/link-has-expired' );
 				return;
 			}
 			const { redirect_to } = data;
@@ -62,29 +75,9 @@ class HandleEmailedLinkForm extends React.Component {
 		} );
 	}
 
-	doingAppLogin() {
-		const { client_id: clientId } = this.props.queryArguments;
-		return clientId && clientId !== config( 'wpcom_signup_id' );
-	}
-
 	render() {
-		const { currentUser, queryArguments, translate } = this.props;
-		const { email: emailAddress, token, tt: tokenTime } = queryArguments;
-		if ( ! ( emailAddress && token && tokenTime ) ) {
-			// @TODO redirect? 400 error?
-			return (
-				<div>{ 'Invalid Arguments' }</div>
-			);
-		}
-
-		if ( ! emailValidator.validate( emailAddress ) ) {
-			// @TODO redirect? 400 error?
-			return (
-				<div>{ 'Invalid Email' }</div>
-			);
-		}
-
-		const doingAppLogin = this.doingAppLogin();
+		const { currentUser, emailAddress, translate } = this.props;
+		const doingAppLogin = this.props.clientId !== config( 'wpcom_signup_id' );
 
 		return (
 			<div>
@@ -131,9 +124,20 @@ class HandleEmailedLinkForm extends React.Component {
 }
 
 const mapState = state => {
+	const queryArguments = getCurrentQueryArguments( state );
+	const {
+		client_id: clientId,
+		email: emailAddress,
+		token,
+		tt: tokenTime
+	} = queryArguments;
+
 	return {
 		currentUser: getCurrentUser( state ),
-		queryArguments: getCurrentQueryArguments( state ),
+		clientId,
+		emailAddress,
+		token,
+		tokenTime,
 	};
 };
 

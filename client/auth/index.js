@@ -21,5 +21,6 @@ module.exports = function() {
 	}
 	if ( config.isEnabled( 'magic-login-handle' ) ) {
 		page( '/login/handle-emailed-link', controller.magicLoginClickHandler );
+		page( '/login/link-has-expired', controller.magicLoginHasExpired );
 	}
 };
