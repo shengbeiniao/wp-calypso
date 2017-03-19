@@ -13,7 +13,7 @@ import LoginComponent from './login';
 import ConnectComponent from './connect';
 import RequestLoginEmailForm from './request-login-email-form';
 import HandleEmailedLinkForm from './handle-emailed-link-form';
-import EmailedLoginLinkSuccessfully from './emailed-login-link-successfully.jsx';
+import EmailedLoginLinkSuccessfully from './emailed-login-link-successfully';
 import * as OAuthToken from 'lib/oauth-token';
 import wpcom from 'lib/wp';
 import config from 'config';
