@@ -35,6 +35,7 @@ class EmailedLoginLinkSuccessfully extends React.Component {
 				<RedirectWhenLoggedIn
 					redirectTo="/help"
 					replaceCurrentLocation={ true }
+					waitForEmailAddress={ emailAddress }
 				/>
 				<EmptyContent
 					action={ translate( 'Back to WordPress.com' ) }
