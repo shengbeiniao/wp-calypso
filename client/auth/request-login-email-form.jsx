@@ -33,6 +33,7 @@ class RequestLoginEmailForm extends React.Component {
 			isEmailValid: false,
 		};
 	}
+
 	componentWillMount() {
 		const stateSetter = this.setFormState.bind( this );
 

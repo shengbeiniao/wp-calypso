@@ -8,12 +8,8 @@ import emailValidator from 'email-validator';
 /**
  * Internal dependencies
  */
-import FormButton from 'components/forms/form-button';
-import FormFieldset from 'components/forms/form-fieldset';
-import LoggedOutForm from 'components/logged-out-form';
-import LoggedOutFormFooter from 'components/logged-out-form/footer';
-import LoggedOutFormLinks from 'components/logged-out-form/links';
-import LoggedOutFormLinkItem from 'components/logged-out-form/link-item';
+import Button from 'components/button';
+import EmptyContent from 'components/empty-content';
 
 import config from 'config';
 import debugFactory from 'debug';
@@ -77,48 +73,46 @@ class HandleEmailedLinkForm extends React.Component {
 
 	render() {
 		const { currentUser, emailAddress, translate } = this.props;
-		const doingAppLogin = this.props.clientId !== config( 'wpcom_signup_id' );
+		const action = (
+			<Button primary disabled={ !! this.state.hasSubmitted } onClick={ e => this.handleSubmit( e ) }>
+				{ translate( 'Finish Login' ) }
+			</Button>
+		);
+		const title =
+			this.props.clientId === config( 'wpcom_signup_id' )
+				? translate( 'Continue to WordPress.com' )
+				: translate( 'Continue to WordPress.com on your WordPress app' );
+		const line = [
+			translate(
+				'Logging in as %(emailAddress)s', {
+					args: {
+						emailAddress,
+					}
+				}
+			)
+		];
+
+		if ( currentUser && currentUser.username ) {
+			line.push( <p>{
+				translate( 'NOTE: You are already logged in as user: %(user)s', {
+					args: {
+						user: currentUser.username,
+					}
+				} ) }<br />
+				{ translate( 'Continuing will switch users.' ) }
+				</p> );
+		}
 
 		return (
-			<div>
-				<LoggedOutForm onSubmit={ e => this.handleSubmit( e ) }>
-					{ doingAppLogin
-						? <p>{ translate( 'Continue to WordPress.com on your WordPress app' ) }</p>
-						: <p>{ translate( 'Continue to WordPress.com' ) }</p>
-					}
-					<p>{
-						translate(
-							'Logging in as %(emailAddress)s', {
-								args: {
-									emailAddress,
-								}
-							}
-						)
-					}</p>
-					{ currentUser && currentUser.username
-						? <p>{
-							translate( 'NOTE: You are already logged in as user: %(user)s', {
-								args: {
-									user: currentUser.username,
-								}
-							} ) }<br />
-							{ translate( 'Continuing will switch users.' ) }
-						</p> : null
-					}
-					<FormFieldset>
-						<LoggedOutFormFooter>
-							<FormButton primary disabled={ !! this.state.hasSubmitted }>
-								{ translate( 'Finish Login' ) }
-							</FormButton>
-						</LoggedOutFormFooter>
-					</FormFieldset>
-				</LoggedOutForm>
-				<LoggedOutFormLinks>
-					<LoggedOutFormLinkItem href={ config( 'login_url' ) }>
-						{ translate( 'Enter a password instead' ) }
-					</LoggedOutFormLinkItem>
-				</LoggedOutFormLinks>
-			</div>
+			<EmptyContent
+				action={ action }
+				illustration={ '/calypso/images/drake/drake-nosites.svg' }
+				illustrationWidth={ 500 }
+				line={ line }
+				secondaryAction={ translate( 'Enter a password instead' ) }
+				secondaryActionURL={ config( 'login_url' ) }
+				title={ title }
+				/>
 		);
 	}
 }
