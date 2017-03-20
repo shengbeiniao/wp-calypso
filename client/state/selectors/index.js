@@ -73,6 +73,7 @@ export isDirectlyReady from './is-directly-ready';
 export isDirectlyUninitialized from './is-directly-uninitialized';
 export isDomainOnlySite from './is-domain-only-site';
 export isFetchingJetpackModules from './is-fetching-jetpack-modules';
+export isFetchingPublicizeShareActions from './is-fetching-publicize-share-actions';
 export isJetpackModuleActive from './is-jetpack-module-active';
 export isJetpackModuleUnavailableInDevelopmentMode from './is-jetpack-module-unavailable-in-development-mode';
 export isJetpackSettingsSaveFailure from './is-jetpack-settings-save-failure';
