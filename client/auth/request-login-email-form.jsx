@@ -15,6 +15,7 @@ import LoggedOutForm from 'components/logged-out-form';
 import LoggedOutFormFooter from 'components/logged-out-form/footer';
 import LoggedOutFormLinks from 'components/logged-out-form/links';
 import LoggedOutFormLinkItem from 'components/logged-out-form/link-item';
+import Notice from 'components/notice';
 
 import config from 'config';
 import debugFactory from 'debug';
@@ -68,6 +69,7 @@ class RequestLoginEmailForm extends React.Component {
 	handleSubmit( event ) {
 		event.preventDefault();
 
+		const { translate } = this.props;
 		const emailAddress = formState.getFieldValue( this.state.form, 'emailAddress' );
 		debug( 'form submitted!', emailAddress );
 
@@ -83,7 +85,11 @@ class RequestLoginEmailForm extends React.Component {
 			email: emailAddress
 		}, ( err, data ) => {
 			if ( err ) {
-				// @TODO handle error
+				this.setState( {
+					errorMessage: err.message
+						? err.message
+						: translate( 'Could not request a login email. Please try again later.' ),
+				} );
 				return;
 			}
 			debug( 'Requeset successful', data );
@@ -104,6 +110,21 @@ class RequestLoginEmailForm extends React.Component {
 		const { currentUser, translate } = this.props;
 		return (
 			<div>
+				{ this.state.errorMessage
+					? <Notice
+						duration={ 10000 }
+						text={ this.state.errorMessage }
+						className="auth__request-login-email-form-notice"
+						showDismiss={ true }
+						onDismissClick={ () => {
+							this.setState( {
+								errorMessage: null,
+								hasSubmitted: false,
+							} );
+						} }
+						status="is-error" />
+					: null
+				}
 				<LoggedOutForm onSubmit={ e => this.handleSubmit( e ) }>
 					<p>{
 						translate( 'Get a link sent to the email address associated ' +
