@@ -21,24 +21,11 @@ import wpcom from 'lib/wp';
 const debug = debugFactory( 'calypso:magic-login' );
 
 class HandleEmailedLinkForm extends React.Component {
-	constructor( props ) {
-		super( props );
-		this.state = {
-			hasSubmitted: false,
-		};
-	}
+	state = {
+		hasSubmitted: false,
+	};
 
-	componentWillMount() {
-		const { emailAddress, token, tokenTime } = this.props;
-
-		if ( emailAddress && emailValidator.validate( emailAddress ) && token && tokenTime ) {
-			return;
-		}
-
-		window.location.replace( '/login/link-has-expired' );
-	}
-
-	handleSubmit( event ) {
+	handleSubmit = event => {
 		event.preventDefault();
 
 		debug( 'form submitted!' );
@@ -69,12 +56,22 @@ class HandleEmailedLinkForm extends React.Component {
 				window.location.replace( '/' );
 			}
 		} );
+	};
+
+	componentWillMount() {
+		const { emailAddress, token, tokenTime } = this.props;
+
+		if ( emailAddress && emailValidator.validate( emailAddress ) && token && tokenTime ) {
+			return;
+		}
+
+		window.location.replace( '/login/link-has-expired' );
 	}
 
 	render() {
 		const { currentUser, emailAddress, translate } = this.props;
 		const action = (
-			<Button primary disabled={ !! this.state.hasSubmitted } onClick={ e => this.handleSubmit( e ) }>
+			<Button primary disabled={ !! this.state.hasSubmitted } onClick={ this.handleSubmit }>
 				{ translate( 'Finish Login' ) }
 			</Button>
 		);

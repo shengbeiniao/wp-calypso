@@ -27,49 +27,37 @@ import wpcom from 'lib/wp';
 const debug = debugFactory( 'calypso:magic-login' );
 
 class RequestLoginEmailForm extends React.Component {
-	constructor( props ) {
-		super( props );
-		this.state = {
-			hasSubmitted: false,
-			isEmailValid: false,
-		};
-	}
+	state = {
+		hasSubmitted: false,
+		isEmailValid: false,
+	};
 
-	componentWillMount() {
-		const stateSetter = this.setFormState.bind( this );
-
-		this.formStateController = new formState.Controller( {
-			fieldNames: [ 'emailAddress' ],
-			debounceWait: 100,
-			validatorFunction: this.validate.bind( this ),
-			onNewState: stateSetter,
-			hideFieldErrorsOnChange: false,
-			initialState: {
-				emailAddress: {
-					value: '',
-				}
-			}
-		} );
-
-		stateSetter( this.formStateController.getInitialState() );
-	}
-
-	setFormState( state ) {
-		debug( 'setFormState', state );
-		this.setState( { form: state } );
-	}
-
-	handleChangeEvent( event ) {
+	handleChangeEvent = event => {
 		this.formStateController.handleFieldChange( {
 			name: event.target.name,
 			value: event.target.value
 		} );
-	}
+	};
 
-	handleSubmit( event ) {
+	handleError = error => {
+		const { translate } = this.props;
+		this.setState( {
+			errorMessage: error.message
+				? error.message
+				: translate( 'Could not request a login email. Please try again later.' ),
+		} );
+	};
+
+	handleNoticeDismiss = () => {
+		this.setState( {
+			errorMessage: null,
+			hasSubmitted: false,
+		} );
+	};
+
+	handleSubmit = event => {
 		event.preventDefault();
 
-		const { translate } = this.props;
 		const emailAddress = formState.getFieldValue( this.state.form, 'emailAddress' );
 		debug( 'form submitted!', emailAddress );
 
@@ -83,18 +71,36 @@ class RequestLoginEmailForm extends React.Component {
 
 		wpcom.undocumented().requestMagicLoginEmail( {
 			email: emailAddress
-		}, ( err, data ) => {
-			if ( err ) {
-				this.setState( {
-					errorMessage: err.message
-						? err.message
-						: translate( 'Could not request a login email. Please try again later.' ),
-				} );
+		}, ( error, data ) => {
+			if ( error ) {
+				this.handleError( error );
 				return;
 			}
 			debug( 'Requeset successful', data );
 			window.location.replace( '/login/link-was-sent?email=' + encodeURIComponent( emailAddress ) );
 		} );
+	};
+
+	setFormState = state => {
+		debug( 'setFormState', state );
+		this.setState( { form: state } );
+	};
+
+	componentWillMount() {
+		this.formStateController = new formState.Controller( {
+			fieldNames: [ 'emailAddress' ],
+			debounceWait: 100,
+			validatorFunction: this.validate.bind( this ),
+			onNewState: this.setFormState,
+			hideFieldErrorsOnChange: false,
+			initialState: {
+				emailAddress: {
+					value: '',
+				}
+			}
+		} );
+
+		this.setFormState( this.formStateController.getInitialState() );
 	}
 
 	validate( formValues ) {
@@ -116,16 +122,11 @@ class RequestLoginEmailForm extends React.Component {
 						text={ this.state.errorMessage }
 						className="auth__request-login-email-form-notice"
 						showDismiss={ true }
-						onDismissClick={ () => {
-							this.setState( {
-								errorMessage: null,
-								hasSubmitted: false,
-							} );
-						} }
+						onDismissClick={ this.handleNoticeDismiss }
 						status="is-error" />
 					: null
 				}
-				<LoggedOutForm onSubmit={ e => this.handleSubmit( e ) }>
+				<LoggedOutForm onSubmit={ this.handleSubmit }>
 					<p>{
 						translate( 'Get a link sent to the email address associated ' +
 							'with your account to log in instantly without your password.' )
@@ -145,7 +146,7 @@ class RequestLoginEmailForm extends React.Component {
 							name="emailAddress"
 							placeholder="Email address"
 							value={ this.state.form.emailAddress.value }
-							onChange={ e => this.handleChangeEvent( e ) }
+							onChange={ this.handleChangeEvent }
 						/>
 
 						<LoggedOutFormFooter>
