@@ -64,7 +64,7 @@
 		"plans/personal-plan": true,
 		"post-editor/author-selector": true,
 		"post-editor/image-editor": true,
-		"post-editor/mentions": false,
+		"post-editor/mentions": true,
 		"press-this": false,
 		"preview-layout": true,
 		"reader": true,
