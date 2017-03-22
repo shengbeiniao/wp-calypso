@@ -16,6 +16,7 @@ import SeoSettingsHelpCard from 'my-sites/site-settings/seo-settings/help';
 import AnalyticsSettings from 'my-sites/site-settings/form-analytics';
 import JetpackSiteStats from 'my-sites/site-settings/jetpack-site-stats';
 import RelatedPosts from 'my-sites/site-settings/related-posts';
+import AmpWpcom from 'my-sites/site-settings/amp/wpcom';
 import wrapSettingsForm from 'my-sites/site-settings/wrap-settings-form';
 import { getSelectedSite, getSelectedSiteId } from 'state/ui/selectors';
 import { isJetpackSite, siteSupportsJetpackSettingsUi } from 'state/sites/selectors';
@@ -25,11 +26,15 @@ const SiteSettingsTraffic = ( {
 	jetpackSettingsUiSupported,
 	handleAutosavingToggle,
 	handleSubmitForm,
+	isJetpack,
 	isRequestingSettings,
 	isSavingSettings,
 	setFieldValue,
 	site,
 	sites,
+	submitForm,
+	trackEvent,
+	updateFields,
 	upgradeToBusiness
 } ) => (
 	<Main className="traffic__main site-settings">
@@ -52,6 +57,17 @@ const SiteSettingsTraffic = ( {
 			isRequestingSettings={ isRequestingSettings }
 			fields={ fields }
 		/>
+		{
+			! isJetpack &&
+			<AmpWpcom
+				submitForm={ submitForm }
+				trackEvent={ trackEvent }
+				updateFields={ updateFields }
+				isSavingSettings={ isSavingSettings }
+				isRequestingSettings={ isRequestingSettings }
+				fields={ fields }
+			/>
+		}
 		<AnalyticsSettings />
 		<SeoSettingsHelpCard />
 		<SeoSettingsMain sites={ sites } upgradeToBusiness={ upgradeToBusiness } />
@@ -72,6 +88,7 @@ const connectComponent = connect(
 
 		return {
 			site,
+			isJetpack,
 			jetpackSettingsUiSupported,
 		};
 	}
@@ -87,6 +104,8 @@ const getFormSettings = partialRight( pick, [
 	'jetpack_relatedposts_enabled',
 	'jetpack_relatedposts_show_headline',
 	'jetpack_relatedposts_show_thumbnails',
+	'amp_is_supported',
+	'amp_is_enabled',
 ] );
 
 export default flowRight(
