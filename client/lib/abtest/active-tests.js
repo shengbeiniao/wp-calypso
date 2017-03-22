@@ -17,14 +17,6 @@ module.exports = {
 		defaultVariation: 'userLast',
 		allowExistingUsers: false,
 	},
-	signupStepOneCopyChanges: {
-		datestamp: '20170307',
-		variations: {
-			original: 0,
-			modified: 100, //Test completed. Sending copy for translation.
-		},
-		defaultVariation: 'original',
-	},
 	readerPostCardTagCount: {
 		datestamp: '20170315',
 		variations: {
