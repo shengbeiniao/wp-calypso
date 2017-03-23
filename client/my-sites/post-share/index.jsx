@@ -44,7 +44,7 @@ import Banner from 'components/banner';
 import Connection from './connection';
 import ActionsList from './publicize-actions-list';
 import { isEnabled } from 'config';
-import AsyncLoad from 'components/async-load';
+import CalendarButton from 'blocks/calendar-button';
 import formatCurrency from 'lib/format-currency';
 import {
 	SCHEDULED,
@@ -159,7 +159,7 @@ class PostShare extends Component {
 	}
 
 	renderShareButton() {
-		const { translate } = this.props;
+		const { siteId, translate } = this.props;
 		return (
 			<div className="post-share__button-actions">
 				<Button onClick={ this.previewSharingPost }>
@@ -176,20 +176,18 @@ class PostShare extends Component {
 						{ translate( 'Share post' ) }
 					</Button>
 
-					<AsyncLoad
-						require="blocks/scheduler-popover"
-						site={ this.props.site }
-						type="button" // ButtonGroup hopes that this element should be a button.
+					<CalendarButton
+						primary
+						className="post-share__schedule-button"
+						title={ translate( 'Set date and time' ) }
+						tabIndex={ 3 }
+
+						siteId={ siteId }
+
+						popoverPosition="bottom left"
 					>
-						<Button
-							primary
-							className="post-share__schedule-button"
-							title={ translate( 'Set date and time' ) }
-							tabIndex={ 3 }
-						>
-							<Gridicon icon="calendar" />
-						</Button>
-					</AsyncLoad>
+						<Gridicon icon="calendar" />
+					</CalendarButton>
 				</ButtonGroup>
 			</div>
 		);
