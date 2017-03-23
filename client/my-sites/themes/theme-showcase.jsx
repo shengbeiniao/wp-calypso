@@ -165,7 +165,7 @@ const ThemeShowcase = React.createClass( {
 			getSubjects()
 				.map( subject => subjectsMeta[ subject ] && {
 					label: subject,
-					link: '/design/filter/' + subject,
+					link: '/design/filter/' + getSortedFilterTerms( 'subject:' + subject ),
 					icon: subjectsMeta[ subject ].icon,
 					order: subjectsMeta[ subject ].order
 				} )

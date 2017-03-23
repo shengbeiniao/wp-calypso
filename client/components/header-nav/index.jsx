@@ -91,6 +91,7 @@ export default class HeaderNav extends Component {
 				tabIndex={ index }
 				label={ item.label }
 				icon={ item.icon }
+				link={ item.link }
 			/>
 		);
 	}

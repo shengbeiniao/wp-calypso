@@ -13,7 +13,8 @@ export const Item = props => {
 		tabIndex,
 		onClick,
 		label,
-		icon
+		icon,
+		link
 	} = props;
 
 	const classes = classNames(
@@ -23,6 +24,7 @@ export const Item = props => {
 
 	return (
 		<a
+			href={ link }
 			className={ classes }
 			onClick={ onClick }
 			tabIndex={ tabIndex }
@@ -41,7 +43,8 @@ Item.propTypes = {
 	tabIndex: PropTypes.number,
 	onClick: PropTypes.func,
 	label: PropTypes.string.isRequired,
-	icon: PropTypes.string
+	icon: PropTypes.string,
+	link: PropTypes.string.isRequired
 };
 
 Item.defaultProps = {
