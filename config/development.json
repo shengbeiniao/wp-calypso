@@ -116,7 +116,6 @@
 		"post-editor/image-editor": true,
 		"post-editor/insert-menu": true,
 		"post-editor/media-advanced": false,
-		"post-editor/mentions": true,
 		"press-this": true,
 		"push-notifications": true,
 		"reader": true,
