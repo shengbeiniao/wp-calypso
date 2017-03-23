@@ -43,3 +43,7 @@ Flux store providing the site-related messages for `notices.js`. Works with the 
 #### notices.js
 
 A mixin that displays site information and error notices via the [notices](/client/notices) module.
+
+#### sites-observer.jsx
+
+A High-Order-Component that mimic the functionality of `data-observer` only specific to SitesList. It listen to `change` even of SitesList and create a new object that uses the original `SitesList` as prototype thus `PureComponent` detect the data was changed even though `SitesList` changes in-place.
