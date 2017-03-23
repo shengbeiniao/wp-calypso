@@ -116,29 +116,28 @@ class RequestLoginEmailForm extends React.Component {
 		const { currentUser, translate } = this.props;
 		return (
 			<div>
-				{ this.state.errorMessage
-					? <Notice
+				{ this.state.errorMessage &&
+					<Notice
 						duration={ 10000 }
 						text={ this.state.errorMessage }
 						className="auth__request-login-email-form-notice"
 						showDismiss={ true }
 						onDismissClick={ this.handleNoticeDismiss }
 						status="is-error" />
-					: null
 				}
 				<LoggedOutForm onSubmit={ this.handleSubmit }>
 					<p>{
 						translate( 'Get a link sent to the email address associated ' +
 							'with your account to log in instantly without your password.' )
 					}</p>
-					{ currentUser && currentUser.username
-						? <p>{
+					{ currentUser && currentUser.username &&
+						<p>{
 							translate( 'NOTE: You are already logged in as user: %(user)s', {
 								args: {
 									user: currentUser.username
 								}
 							} ) }</p>
-						: null }
+					}
 					<FormFieldset>
 						<FormTextInput
 							autoCapitalize="off"
