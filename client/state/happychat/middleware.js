@@ -25,7 +25,7 @@ export const requestTranscript = ( connection, { getState, dispatch } ) => {
 	);
 };
 
-export const sendEventMessage = ( connection, { getState }, action ) =>{
+export const sendRouteSetEventMessage = ( connection, { getState }, action ) =>{
 	const state = getState();
 	const currentUser = getCurrentUser( state );
 	if ( isHappychatClientConnected( state ) &&
@@ -48,7 +48,7 @@ export default function( connection = null ) {
 				requestTranscript( connection, store );
 				break;
 			case ROUTE_SET:
-				sendEventMessage( connection, store, action );
+				sendRouteSetEventMessage( connection, store, action );
 				break;
 		}
 		return next( action );
