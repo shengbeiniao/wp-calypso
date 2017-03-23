@@ -5,6 +5,8 @@ import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import { noop } from 'lodash';
 
+import Gridicon from 'gridicons';
+
 export const Item = props => {
 	const {
 		isSelected,
@@ -20,21 +22,17 @@ export const Item = props => {
 	);
 
 	return (
-		<li className={ classes }>
-			<a
-				className={ 'header-nav__link' }
-				onClick={ onClick }
-				tabIndex={ tabIndex }
-				aria-selected={ isSelected }
-				role="menuitem">
-				<span className={ 'header-nav__icon' }>
-					{ icon }
-				</span>
-				<span className={ 'header-nav__label' }>
-					{ label }
-				</span>
-			</a>
-		</li>
+		<a
+			className={ classes }
+			onClick={ onClick }
+			tabIndex={ tabIndex }
+			aria-selected={ isSelected }
+			role="menuitem">
+			<Gridicon className="header-nav__icon" icon={ icon } size={ 24 } />
+			<div className={ 'header-nav__label' }>
+				{ label }
+			</div>
+		</a>
 	);
 };
 

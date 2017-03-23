@@ -11,9 +11,9 @@ import Item from 'components/header-nav/item';
 
 const HeaderNavExample = () => {
 	const options = [
-		{ value: 'new', label: 'New' },
-		{ value: 'photo', label: 'Photo' },
-		{ value: 'portfolio', label: 'Portfolio' }
+		{ value: 'new', label: 'New', icon: 'star' },
+		{ value: 'photo', label: 'Photo', icon: 'camera' },
+		{ value: 'portfolio', label: 'Portfolio', icon: 'custom-post-type' }
 	];
 
 	return (
