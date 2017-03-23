@@ -22,7 +22,7 @@ class CalendarPopover extends Component {
 		// popover properties
 		position: PropTypes.string,
 
-		// scheduler properties
+		// calendar properties
 		gmtOffset: PropTypes.number,
 		timezoneValue: PropTypes.string,
 		onDateChange: PropTypes.func,
@@ -48,7 +48,7 @@ class CalendarPopover extends Component {
 			'onDateChange',
 			'onMonthChange',
 		] ), {
-			className: 'scheduler-popover__scheduler',
+			className: 'calendar-popover__scheduler',
 		} );
 
 		return (
@@ -65,10 +65,10 @@ class CalendarPopover extends Component {
 
 	render() {
 		return (
-			<div className="scheduler-popover">
+			<div className="calendar-popover">
 				<Popover
 					context={ this.props.context }
-					className="scheduler-popover__popover"
+					className="calendar-popover__popover"
 					isVisible={ this.props.isVisible }
 					onClose={ this.props.onClose }
 					position={ this.props.popover }
