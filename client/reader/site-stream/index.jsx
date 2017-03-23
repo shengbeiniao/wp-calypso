@@ -10,12 +10,9 @@ import { connect } from 'react-redux';
  */
 import DocumentHead from 'components/data/document-head';
 import RefreshFeedHeader from 'blocks/reader-feed-header';
-import FeedFeatured from './featured';
 import EmptyContent from './empty';
 import Stream from 'reader/stream';
-import { state as SiteState } from 'lib/reader-site-store/constants';
 import FeedError from 'reader/feed-error';
-import feedStreamFactory from 'lib/feed-stream-store';
 import { getSite } from 'state/reader/sites/selectors';
 import { getFeed } from 'state/reader/feeds/selectors';
 import QueryReaderSite from 'components/data/query-reader-site';
@@ -24,7 +21,7 @@ import QueryReaderFeed from 'components/data/query-reader-feed';
 // TODO was it okay to remove checkForRedirect?  I think that always paid attentiont to prefer_feed which doesn't exist in the reducer
 // we also always prefer the feed anyway...
 
-// TODO - what is has_featured for?
+// TODO - what is has_featured for?  I deleted a whole bit about featured feeds but probably need to put those back in
 
 class SiteStream extends React.Component {
 
@@ -60,16 +57,6 @@ class SiteStream extends React.Component {
 			return <FeedError sidebarTitle={ title } />;
 		}
 
-		// if ( site && site.get( 'state' ) === SiteState.ERROR ) {
-		// 	return <FeedError sidebarTitle={ title } />;
-		// }
-
-		// if ( site && site.get( 'has_featured' ) ) {
-		// 	featuredStore = feedStreamFactory( 'featured:' + site.get( 'ID' ) );
-		// 	// setTimeout( () => FeedStreamStoreActions.fetchNextPage( featuredStore.id ), 0 ); // timeout to prevent invariant violations
-		// 	featuredContent = ( <FeedFeatured store={ featuredStore } /> );
-		// }
-
 		return (
 			<Stream
 				{ ...this.props }
@@ -82,7 +69,6 @@ class SiteStream extends React.Component {
 			>
 				<DocumentHead title={ this.props.translate( '%s ‹ Reader', { args: title } ) } />
 				<RefreshFeedHeader site={ site } feed={ feed } showBack={ this.props.showBack } />
-				{/*{ featuredContent }*/}
 				{ ! site && <QueryReaderSite siteId={ this.props.siteId } /> }
 				{ ! feed && site && <QueryReaderFeed feedId={ site.feed_ID } /> }
 			</Stream>
